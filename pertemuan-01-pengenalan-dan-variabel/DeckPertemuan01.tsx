@@ -549,36 +549,36 @@ export default function DeckPertemuan01() {
       {/* Slide 4: Kelebihan vs Kekurangan */}
       <Contrast
         nav="Kelebihan & Kekurangan"
-        notes="Tekankan bahwa setiap bahasa pemrograman memiliki keunggulan dan keterbatasan."
-        kicker="ANALISIS BAHASA"
-        title="Kelebihan & Kekurangan Python"
+        notes="Setiap bahasa memiliki trade-off teknis yang perlu dipertimbangkan."
+        kicker="KARAKTERISTIK BAHASA"
+        title="Kelebihan dan Batasan Python"
         left={{
-          label: 'Kekurangan & Batasan',
+          label: 'Batasan Teknis',
           title: 'Trade-off Python',
           points: [
-            'Kecepatan eksekusi lebih lambat dibanding bahasa C/C++, Rust, dan Go',
-            'Konsumsi memori RAM relatif lebih besar',
-            'Bukan pilihan utama untuk aplikasi mobile native (Android/iOS)',
-            'Kesalahan tipe data baru terdeteksi pada saat runtime (Dynamic Typing)',
+            'Eksekusi lebih lambat dibanding bahasa kompilasi seperti C, C++, atau Rust',
+            'Konsumsi RAM relatif lebih besar pada pemrosesan skala masif',
+            'Bukan ekosistem utama untuk pengembangan aplikasi mobile native Android/iOS',
+            'Kesalahan tipe baru diketahui saat program dijalankan (Dynamic Typing)',
           ],
         }}
         right={{
-          label: 'Kelebihan Utama',
-          title: 'Keunggulan Python',
+          label: 'Keunggulan Desain',
+          title: 'Kelebihan Python',
           points: [
-            'Sintaks sangat ekspresif, bersih, dan mudah dipahami oleh pemula',
-            'Kecepatan pengembangan (development speed) jauh lebih tinggi',
-            'Pustaka bawaan (standard library) sangat lengkap (Batteries Included)',
-            'Dukungan komunitas open-source global yang sangat masif di berbagai platform',
+            'Sintaks ringkas dan mendekati bahasa Inggris, menghemat waktu penulisan',
+            'Waktu pengembangan (development speed) jauh lebih cepat untuk prototipe',
+            'Pustaka bawaan (standard library) sudah menyediakan modul matematika, file, dan HTTP',
+            'Ekosistem pustaka pihak ketiga terbesar untuk analisis data dan backend',
           ],
         }}
       />
 
       {/* Slide 5: Manfaat & Domain Penerapan */}
-      <Slide center nav="Manfaat & Domain" notes="Jelaskan 4 pilar industri di mana Python menjadi teknologi standar.">
-        <div className="kicker">DUNIA KERJA & INDUSTRI</div>
+      <Slide center nav="Manfaat & Domain" notes="Empat bidang industri utama tempat Python digunakan secara luas.">
+        <div className="kicker">PENERAPAN DI INDUSTRI</div>
         <h2 className="headline" style={{ marginBottom: '32px' }}>
-          Manfaat & <span className="accent-text">Penerapan di Industri</span>
+          Di Mana Saja <span className="accent-text">Python Digunakan?</span>
         </h2>
         <div
           style={{
@@ -598,7 +598,7 @@ export default function DeckPertemuan01() {
               <h3 style={{ fontSize: '1.05rem', fontWeight: 600, margin: 0, color: 'var(--fg)' }}>Data Science & AI</h3>
             </div>
             <p style={{ color: 'var(--fg-muted)', fontSize: '0.88rem', lineHeight: 1.6, margin: 0 }}>
-              Standar utama untuk Machine Learning, Deep Learning, dan analisis statistik data besar.
+              Mengolah dataset besar, membuat visualisasi grafik, dan melatih model Machine Learning.
             </p>
             <div style={{ marginTop: '16px', fontSize: '0.8rem', color: 'var(--primary)', fontFamily: 'var(--font-mono)' }}>
               NumPy · Pandas · PyTorch
@@ -613,7 +613,7 @@ export default function DeckPertemuan01() {
               <h3 style={{ fontSize: '1.05rem', fontWeight: 600, margin: 0, color: 'var(--fg)' }}>Web Backend</h3>
             </div>
             <p style={{ color: 'var(--fg-muted)', fontSize: '0.88rem', lineHeight: 1.6, margin: 0 }}>
-              Membangun REST API berkecepatan tinggi dan sistem web berskala besar yang modular.
+              Membangun server backend, mengelola database relasional, dan menyajikan REST API.
             </p>
             <div style={{ marginTop: '16px', fontSize: '0.8rem', color: 'var(--primary)', fontFamily: 'var(--font-mono)' }}>
               FastAPI · Django · Flask
@@ -625,13 +625,13 @@ export default function DeckPertemuan01() {
               <div style={iconBoxStyle}>
                 <i className="fa-solid fa-gears"></i>
               </div>
-              <h3 style={{ fontSize: '1.05rem', fontWeight: 600, margin: 0, color: 'var(--fg)' }}>Otomasi & Scripting</h3>
+              <h3 style={{ fontSize: '1.05rem', fontWeight: 600, margin: 0, color: 'var(--fg)' }}>Otomasi Tugas</h3>
             </div>
             <p style={{ color: 'var(--fg-muted)', fontSize: '0.88rem', lineHeight: 1.6, margin: 0 }}>
-              Mengotomatisasi tugas rutin kantor, pengolahan spreadsheet, web scraping, dan devops tooling.
+              Mengotomatiskan pemrosesan file Excel/PDF massal, pemindahan data, dan scraping web.
             </p>
             <div style={{ marginTop: '16px', fontSize: '0.8rem', color: 'var(--primary)', fontFamily: 'var(--font-mono)' }}>
-              Selenium · Scrapy · Requests
+              Selenium · OpenPyXL · Requests
             </div>
           </div>
 
@@ -640,13 +640,13 @@ export default function DeckPertemuan01() {
               <div style={iconBoxStyle}>
                 <i className="fa-solid fa-shield-halved"></i>
               </div>
-              <h3 style={{ fontSize: '1.05rem', fontWeight: 600, margin: 0, color: 'var(--fg)' }}>Cybersecurity & IoT</h3>
+              <h3 style={{ fontSize: '1.05rem', fontWeight: 600, margin: 0, color: 'var(--fg)' }}>Keamanan Jaringan & IoT</h3>
             </div>
             <p style={{ color: 'var(--fg-muted)', fontSize: '0.88rem', lineHeight: 1.6, margin: 0 }}>
-              Digunakan praktisi keamanan informasi untuk analisis jaringan, penetration testing, dan IoT.
+              Membuat skrip audit keamanan jaringan, pengujian penetrasi, dan pemrograman mikrokontroler.
             </p>
             <div style={{ marginTop: '16px', fontSize: '0.8rem', color: 'var(--primary)', fontFamily: 'var(--font-mono)' }}>
-              Scapy · Cryptography · Pi
+              Scapy · Cryptography · MicroPython
             </div>
           </div>
         </div>
@@ -656,28 +656,28 @@ export default function DeckPertemuan01() {
       <Section
         nav="Setup & Instalasi"
         number="02"
-        title="Persiapan Lingkungan"
-        subtitle="Panduan Langkah Demi Langkah Instalasi Python & Editor"
+        title="Persiapan Lingkungan Kerja"
+        subtitle="Instalasi Python di Komputer dan Konfigurasi Terminal"
       />
 
       {/* Slide 7: Langkah Instalasi */}
       <Steps
         nav="Langkah Install"
-        notes="Ingatkan peserta untuk tidak melewatkan centang Add python.exe to PATH!"
+        notes="Pastikan kotak Add python.exe to PATH dicentang agar Python dapat dipanggil dari terminal mana pun."
         kicker="PANDUAN INSTALASI"
-        title="3 Langkah Mudah Instalasi Python"
+        title="3 Langkah Memasang Python"
         items={[
           {
             title: '1. Unduh Installer',
-            body: 'Buka website resmi python.org/downloads dan unduh versi rilis stabil terbaru sesuai sistem operasi Anda.',
+            body: 'Buka python.org/downloads dan unduh versi stabil terbaru untuk sistem operasi Anda.',
           },
           {
             title: '2. Centang Opsi PATH',
-            body: 'Wajib mencentang kotak "Add python.exe to PATH" sebelum memilih tombol Install Now pada layar pertama.',
+            body: 'Centang kotak "Add python.exe to PATH" pada jendela pertama installer sebelum menekan Install Now.',
           },
           {
-            title: '3. Verifikasi Terminal',
-            body: 'Buka command line / terminal dan ketik perintah: python --version untuk memastikan interpreter siap digunakan.',
+            title: '3. Uji di Terminal',
+            body: 'Buka terminal (CMD / PowerShell / Terminal Mac) lalu jalankan: python --version untuk memverifikasi instalasi.',
           },
         ]}
       />
@@ -1101,13 +1101,13 @@ print(f"Usia saya 5 tahun lagi adalah {usia + 5} tahun.")`}
       </Slide>
 
       {/* Slide 15: Penutup & Teaser Pertemuan Selanjutnya */}
-      <Slide center nav="Penutup" notes="Tutup sesi dengan review ringkas dan sampaikan bahwa pertemuan berikutnya kita akan mempelajari Version Control System (Git & GitHub) untuk mengelola kode.">
-        <div className="kicker">AKHIR PERTEMUAN 01</div>
-        <h1 className="headline" style={{ fontSize: '3rem', marginBottom: '16px' }}>
-          Langkah Awal yang <span className="accent-text">Sempurna</span>
+      <Slide center nav="Penutup" notes="Ringkasan capaian hari ini dan topik Git pada pertemuan berikutnya.">
+        <div className="kicker">RANGKUMAN SESI</div>
+        <h1 className="headline" style={{ fontSize: '2.8rem', marginBottom: '16px' }}>
+          Dasar Python Telah <span className="accent-text">Selesai Dipelajari</span>
         </h1>
-        <p style={{ color: 'var(--fg-muted)', fontSize: '1.2rem', maxWidth: '640px', marginInline: 'auto', marginBottom: '32px' }}>
-          Anda telah memahami sejarah, instalasi, serta menguasai deklarasi variabel dan tipe data dasar di Python.
+        <p style={{ color: 'var(--fg-muted)', fontSize: '1.1rem', maxWidth: '640px', marginInline: 'auto', marginBottom: '32px' }}>
+          Hari ini Anda telah menjalankan Python di terminal, memahami tipe data primitif, dan mendeklarasikan variabel sesuai standar PEP 8.
         </p>
 
         <div
@@ -1125,17 +1125,17 @@ print(f"Usia saya 5 tahun lagi adalah {usia + 5} tahun.")`}
             marginInline: 'auto',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--primary)', fontWeight: 600, fontSize: '0.9rem', letterSpacing: '0.04em' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--primary)', fontWeight: 600, fontSize: '0.88rem', letterSpacing: '0.04em' }}>
             <i className="fa-solid fa-code-branch"></i>
-            <span>AGENDA PERTEMUAN SELANJUTNYA</span>
+            <span>PERTEMUAN 02 BERIKUTNYA</span>
           </div>
 
-          <div style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--fg)' }}>
+          <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--fg)' }}>
             Version Control System (VCS) & Git Dasar
           </div>
 
-          <p style={{ fontSize: '0.92rem', color: 'var(--fg-muted)', margin: 0, lineHeight: 1.5 }}>
-            Mempelajari cara mencatat riwayat perubahan kode proyek Python, kolaborasi, serta menyimpan repository menggunakan <strong>Git & GitHub</strong>.
+          <p style={{ fontSize: '0.9rem', color: 'var(--fg-muted)', margin: 0, lineHeight: 1.5 }}>
+            Menyimpan riwayat revisi kode Python, membuat branch, dan mengunggah repositori ke <strong>GitHub</strong>.
           </p>
 
           <div style={{ display: 'flex', gap: '8px', marginTop: '4px' }}>
