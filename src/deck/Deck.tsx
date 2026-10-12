@@ -99,11 +99,15 @@ export default function Deck({ children }: { children: ReactNode }) {
   const [railOpen, setRailOpen] = useState(false);
   const [gridOpen, setGridOpen] = useState(false);
   const [drawing, setDrawing] = useState(false);
+  const [laserPointer, setLaserPointer] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [fs, setFs] = useState(false);
   const [uiHidden, setUiHidden] = useState(false);
   const [nearDock, setNearDock] = useState(false);
   const [cursorIdle, setCursorIdle] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
+  const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
+  const trailIdRef = useRef(0);
   const [noteOverrides, setNoteOverrides] = useState<Record<number, string>>(
     () => {
       try {
@@ -310,6 +314,10 @@ export default function Deck({ children }: { children: ReactNode }) {
         case 'A':
           setDrawing((v) => !v);
           break;
+        case 'l':
+        case 'L':
+          setLaserPointer((v) => !v);
+          break;
         case 'h':
         case 'H':
           setUiHidden((v) => !v);
@@ -394,6 +402,14 @@ export default function Deck({ children }: { children: ReactNode }) {
     const onMove = (e: MouseEvent) => {
       setCursorIdle(false);
       setNearDock(e.clientY > window.innerHeight - 150);
+      setMousePos({ x: e.clientX, y: e.clientY });
+
+      if (laserPointer) {
+        trailIdRef.current += 1;
+        const newPoint = { x: e.clientX, y: e.clientY, id: trailIdRef.current };
+        setTrail((prev) => [...prev.slice(-14), newPoint]);
+      }
+
       clearTimeout(t);
       t = window.setTimeout(() => setCursorIdle(true), 2600);
     };
@@ -402,7 +418,20 @@ export default function Deck({ children }: { children: ReactNode }) {
       clearTimeout(t);
       window.removeEventListener('mousemove', onMove);
     };
-  }, []);
+  }, [laserPointer]);
+
+  // Auto fade trail particles
+  useEffect(() => {
+    if (!laserPointer && trail.length > 0) {
+      setTrail([]);
+      return;
+    }
+    if (trail.length === 0) return;
+    const timer = setTimeout(() => {
+      setTrail((prev) => prev.slice(1));
+    }, 45);
+    return () => clearTimeout(timer);
+  }, [trail, laserPointer]);
 
   const liveCtx = useMemo(
     () => ({ clicks, isStatic: false, registerMax }),
@@ -552,12 +581,22 @@ export default function Deck({ children }: { children: ReactNode }) {
             <span className="noir-sep" />
             <button
               className={'noir-icon-btn' + (drawing ? ' on' : '')}
-              data-tip="Annotate (A)"
+              data-tip="Coret / Gambar (A)"
               aria-label="Annotate"
               aria-pressed={drawing}
               onClick={() => setDrawing((v) => !v)}
             >
               <IconPencil />
+            </button>
+            <button
+              className={'noir-icon-btn' + (laserPointer ? ' on' : '')}
+              data-tip="Laser Pointer / Ekor Kursor (L)"
+              aria-label="Laser Pointer"
+              aria-pressed={laserPointer}
+              onClick={() => setLaserPointer((v) => !v)}
+              style={laserPointer ? { color: '#0284c7', background: 'rgba(2, 132, 199, 0.15)' } : undefined}
+            >
+              <i className="fa-solid fa-wand-magic-sparkles" style={{ fontSize: '13px' }}></i>
             </button>
             <button
               className="noir-icon-btn"
@@ -569,6 +608,54 @@ export default function Deck({ children }: { children: ReactNode }) {
             </button>
           </div>
         </div>
+
+        {/* Efek Laser Pointer & Ekor Kursor (Comet Trail) untuk Mempermudah Presentasi */}
+        {laserPointer && (
+          <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 99998 }}>
+            {/* Jejak Ekor Kursor (Trail Particles) */}
+            {trail.map((point, idx) => {
+              const progress = (idx + 1) / trail.length; // 0..1
+              const size = 6 + progress * 14; // membesar ke arah kepala
+              const opacity = progress * 0.75;
+              return (
+                <div
+                  key={point.id}
+                  style={{
+                    position: 'absolute',
+                    left: point.x - size / 2,
+                    top: point.y - size / 2,
+                    width: size,
+                    height: size,
+                    borderRadius: '50%',
+                    background: `radial-gradient(circle, rgba(2, 132, 199, ${opacity}) 0%, rgba(56, 189, 248, ${opacity * 0.6}) 60%, transparent 100%)`,
+                    boxShadow: `0 0 ${8 * progress}px rgba(2, 132, 199, ${opacity})`,
+                    transition: 'opacity 0.2s ease-out, transform 0.2s ease-out',
+                  }}
+                />
+              );
+            })}
+
+            {/* Kepala Pointer Laser (Bercahaya & Pulsing) */}
+            {mousePos.x > 0 && mousePos.y > 0 && (
+              <div
+                style={{
+                  position: 'absolute',
+                  left: mousePos.x - 14,
+                  top: mousePos.y - 14,
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '50%',
+                  background: 'radial-gradient(circle, #38bdf8 0%, #0284c7 60%, transparent 100%)',
+                  boxShadow: '0 0 18px 4px #0284c7, 0 0 32px 8px rgba(56, 189, 248, 0.5)',
+                  border: '2px solid #ffffff',
+                  transform: 'scale(1)',
+                  pointerEvents: 'none',
+                  animation: 'pulse 1.2s infinite alternate',
+                }}
+              />
+            )}
+          </div>
+        )}
 
         {/* Overlay Khusus Smartphone Portrait: Arahkan Otomatis ke Landscape */}
         {isPortraitMobile && (
