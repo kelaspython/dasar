@@ -9,6 +9,8 @@ import CodeWindow from '../src/components/CodeWindow';
 import Contrast from '../src/components/Contrast';
 import Table from '../src/components/Table';
 import Tabs from '../src/components/Tabs';
+import pythonLogo from '../src/assets/python-logo.svg';
+import guidoPortrait from '../src/assets/guido-van-rossum.jpg';
 
 // Standarisasi style kartu agar konsisten di seluruh slide
 const cardStyle: React.CSSProperties = {
@@ -425,15 +427,15 @@ export default function DeckPertemuan01() {
         notes="Sambut peserta kelas. Jelaskan bahwa hari ini adalah fondasi awal pengenalan Python dan variabel."
         kicker="Kelas Pemrograman Python Dasar · Pertemuan 01"
         title={
-          <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
             <img
-              src="/src/assets/python-logo.svg"
+              src={pythonLogo}
               alt="Logo Python"
-              style={{ width: '54px', height: '54px', filter: 'drop-shadow(0 4px 12px rgba(2, 132, 199, 0.2))' }}
+              style={{ width: '64px', height: '64px', filter: 'drop-shadow(0 4px 12px rgba(2, 132, 199, 0.2))' }}
             />
-            <span>
+            <div>
               Pengenalan <span className="accent-text">Python</span> & Variabel
-            </span>
+            </div>
           </div>
         }
         foot="Silabus Kurikulum Resmi · Modul 01"
@@ -491,7 +493,7 @@ export default function DeckPertemuan01() {
           {/* Kartu Profil Pencipta */}
           <div style={{ ...cardStyle, padding: '16px', textAlign: 'center' }}>
             <img
-              src="/src/assets/guido-van-rossum.jpg"
+              src={guidoPortrait}
               alt="Guido van Rossum"
               style={{
                 width: '100%',
