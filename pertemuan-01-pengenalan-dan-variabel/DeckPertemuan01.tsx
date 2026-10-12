@@ -438,7 +438,7 @@ export default function DeckPertemuan01() {
             </div>
           </div>
         }
-        foot="Silabus Kurikulum Resmi · Modul 01"
+        foot="Mentor: M. Rifaldo Saputra"
       />
 
       {/* Slide 2: Target Pencapaian */}
