@@ -61,3 +61,10 @@ export const IconClose = () => (
     <path d="M6 6l12 12M18 6L6 18" />
   </svg>
 );
+export const IconLaser = () => (
+  <svg {...base}>
+    <path d="M15 4V2m0 16v-2m8-7h-2M6 11H4m13.5-5.5l-1.4 1.4m-8.2 8.2l-1.4 1.4m0-11l1.4 1.4m8.2 8.2l1.4 1.4M12 11a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+    <circle cx="15" cy="9" r="1.5" fill="currentColor" />
+  </svg>
+);
+

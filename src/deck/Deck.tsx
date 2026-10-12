@@ -21,7 +21,9 @@ import {
   IconShrink,
   IconPresent,
   IconClose,
+  IconLaser,
 } from './icons';
+import LaserCanvas from './LaserCanvas';
 
 /* ── The paged presentation engine + the Slidev-style chrome (dock + rail).
    Wrap your <Slide>/<Bento>/… in <Deck>. Each top-level child is one slide.
@@ -100,14 +102,12 @@ export default function Deck({ children }: { children: ReactNode }) {
   const [gridOpen, setGridOpen] = useState(false);
   const [drawing, setDrawing] = useState(false);
   const [laserPointer, setLaserPointer] = useState(false);
+  const [laserToast, setLaserToast] = useState<string | null>(null);
   const [elapsed, setElapsed] = useState(0);
   const [fs, setFs] = useState(false);
   const [uiHidden, setUiHidden] = useState(false);
   const [nearDock, setNearDock] = useState(false);
   const [cursorIdle, setCursorIdle] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
-  const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
-  const trailIdRef = useRef(0);
   const [noteOverrides, setNoteOverrides] = useState<Record<number, string>>(
     () => {
       try {
@@ -246,6 +246,14 @@ export default function Deck({ children }: { children: ReactNode }) {
     setGridOpen((v) => !v);
     setRailOpen(false);
   }, []);
+  const toggleLaser = useCallback(() => {
+    setLaserPointer((prev) => {
+      const next = !prev;
+      setLaserToast(next ? '🔴 Laser Pointer: AKTIF (Tekan L untuk Matikan)' : '⚪ Laser Pointer: NONAKTIF');
+      setTimeout(() => setLaserToast(null), 2000);
+      return next;
+    });
+  }, []);
   const setNote = useCallback((text: string) => {
     setNoteOverrides((prev) => {
       const nextO = { ...prev, [slideRef.current]: text };
@@ -316,7 +324,7 @@ export default function Deck({ children }: { children: ReactNode }) {
           break;
         case 'l':
         case 'L':
-          setLaserPointer((v) => !v);
+          toggleLaser();
           break;
         case 'h':
         case 'H':
@@ -332,7 +340,7 @@ export default function Deck({ children }: { children: ReactNode }) {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [next, prev, go, total, toggleRail, toggleGrid, toggleFs, openPresenter]);
+  }, [next, prev, go, total, toggleRail, toggleGrid, toggleFs, toggleLaser, openPresenter]);
 
   // safety net: if the authored deck kept the placeholder tab title, derive
   // one from the current slide's heading so shared links look right.
@@ -402,14 +410,6 @@ export default function Deck({ children }: { children: ReactNode }) {
     const onMove = (e: MouseEvent) => {
       setCursorIdle(false);
       setNearDock(e.clientY > window.innerHeight - 150);
-      setMousePos({ x: e.clientX, y: e.clientY });
-
-      if (laserPointer) {
-        trailIdRef.current += 1;
-        const newPoint = { x: e.clientX, y: e.clientY, id: trailIdRef.current };
-        setTrail((prev) => [...prev.slice(-14), newPoint]);
-      }
-
       clearTimeout(t);
       t = window.setTimeout(() => setCursorIdle(true), 2600);
     };
@@ -418,20 +418,7 @@ export default function Deck({ children }: { children: ReactNode }) {
       clearTimeout(t);
       window.removeEventListener('mousemove', onMove);
     };
-  }, [laserPointer]);
-
-  // Auto fade trail particles
-  useEffect(() => {
-    if (!laserPointer && trail.length > 0) {
-      setTrail([]);
-      return;
-    }
-    if (trail.length === 0) return;
-    const timer = setTimeout(() => {
-      setTrail((prev) => prev.slice(1));
-    }, 45);
-    return () => clearTimeout(timer);
-  }, [trail, laserPointer]);
+  }, []);
 
   const liveCtx = useMemo(
     () => ({ clicks, isStatic: false, registerMax }),
@@ -477,7 +464,14 @@ export default function Deck({ children }: { children: ReactNode }) {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className={'deck' + (cursorHidden ? ' nocursor' : '')}>
+      <div
+        className={
+          'deck' +
+          (cursorHidden ? ' nocursor' : '') +
+          (laserPointer ? ' laser-active' : '')
+        }
+        style={laserPointer ? { cursor: 'none' } : undefined}
+      >
         <DeckCtx.Provider value={liveCtx}>
           <div className="slide-stage" key={slide}>
             {slides[slide]}
@@ -593,10 +587,14 @@ export default function Deck({ children }: { children: ReactNode }) {
               data-tip="Laser Pointer / Ekor Kursor (L)"
               aria-label="Laser Pointer"
               aria-pressed={laserPointer}
-              onClick={() => setLaserPointer((v) => !v)}
-              style={laserPointer ? { color: '#0284c7', background: 'rgba(2, 132, 199, 0.15)' } : undefined}
+              onClick={toggleLaser}
+              style={
+                laserPointer
+                  ? { color: '#0284c7', background: 'rgba(2, 132, 199, 0.2)', border: '1px solid #0284c7' }
+                  : undefined
+              }
             >
-              <i className="fa-solid fa-wand-magic-sparkles" style={{ fontSize: '13px' }}></i>
+              <IconLaser />
             </button>
             <button
               className="noir-icon-btn"
@@ -609,51 +607,44 @@ export default function Deck({ children }: { children: ReactNode }) {
           </div>
         </div>
 
-        {/* Efek Laser Pointer & Ekor Kursor (Comet Trail) untuk Mempermudah Presentasi */}
-        {laserPointer && (
-          <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 99998 }}>
-            {/* Jejak Ekor Kursor (Trail Particles) */}
-            {trail.map((point, idx) => {
-              const progress = (idx + 1) / trail.length; // 0..1
-              const size = 6 + progress * 14; // membesar ke arah kepala
-              const opacity = progress * 0.75;
-              return (
-                <div
-                  key={point.id}
-                  style={{
-                    position: 'absolute',
-                    left: point.x - size / 2,
-                    top: point.y - size / 2,
-                    width: size,
-                    height: size,
-                    borderRadius: '50%',
-                    background: `radial-gradient(circle, rgba(2, 132, 199, ${opacity}) 0%, rgba(56, 189, 248, ${opacity * 0.6}) 60%, transparent 100%)`,
-                    boxShadow: `0 0 ${8 * progress}px rgba(2, 132, 199, ${opacity})`,
-                    transition: 'opacity 0.2s ease-out, transform 0.2s ease-out',
-                  }}
-                />
-              );
-            })}
+        {/* Canvas Laser Pointer & Ekor Kursor (60fps Ribbon Trail + Click Wave) */}
+        <LaserCanvas active={laserPointer} />
 
-            {/* Kepala Pointer Laser (Bercahaya & Pulsing) */}
-            {mousePos.x > 0 && mousePos.y > 0 && (
-              <div
-                style={{
-                  position: 'absolute',
-                  left: mousePos.x - 14,
-                  top: mousePos.y - 14,
-                  width: '28px',
-                  height: '28px',
-                  borderRadius: '50%',
-                  background: 'radial-gradient(circle, #38bdf8 0%, #0284c7 60%, transparent 100%)',
-                  boxShadow: '0 0 18px 4px #0284c7, 0 0 32px 8px rgba(56, 189, 248, 0.5)',
-                  border: '2px solid #ffffff',
-                  transform: 'scale(1)',
-                  pointerEvents: 'none',
-                  animation: 'pulse 1.2s infinite alternate',
-                }}
-              />
-            )}
+        {/* Toast Notifikasi Status Laser */}
+        {laserToast && (
+          <div
+            style={{
+              position: 'fixed',
+              top: '24px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              background: 'rgba(15, 23, 42, 0.92)',
+              color: '#ffffff',
+              padding: '10px 24px',
+              borderRadius: '999px',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              boxShadow: '0 8px 30px rgba(0, 0, 0, 0.35)',
+              border: '1px solid rgba(56, 189, 248, 0.5)',
+              zIndex: 99999,
+              pointerEvents: 'none',
+              backdropFilter: 'blur(8px)',
+              letterSpacing: '0.02em',
+            }}
+          >
+            <span
+              style={{
+                width: '10px',
+                height: '10px',
+                borderRadius: '50%',
+                background: laserPointer ? '#38bdf8' : '#94a3b8',
+                boxShadow: laserPointer ? '0 0 12px #38bdf8' : 'none',
+              }}
+            />
+            {laserToast}
           </div>
         )}
 
