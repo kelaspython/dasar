@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+.slidev/
+dist/
+
+# Python cache & virtual environment
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# OS files
+.DS_Store
+Thumbs.db

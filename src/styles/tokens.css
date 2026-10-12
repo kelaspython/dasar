@@ -1,0 +1,57 @@
+/* ===================================================================
+   THEME TOKENS — Clean White & Python Blue (Projector / Classroom High-Contrast)
+   Optimal contrast for projectors & classroom displays:
+   - Crisp white canvas (#ffffff)
+   - Deep charcoal text (#0f172a) for razor-sharp legibility
+   - Python Royal Blue (#0284c7 -> #1d4ed8) unified accent
+   - Clean subtle card shadows & crisp hairlines
+   =================================================================== */
+:root {
+  /* Surfaces — Pure white canvas, clean elevated cards */
+  --bg: #ffffff;
+  --bg-grad-1: transparent;
+  --bg-grad-2: transparent;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+
+  /* Ink — High-contrast typography for projectors */
+  --fg: #0f172a;
+  --fg-muted: #334155;
+  --fg-faint: #64748b;
+
+  /* Hairlines — Crisp subtle borders */
+  --hair: rgba(15, 23, 42, 0.12);
+  --hair-2: rgba(15, 23, 42, 0.06);
+
+  /* Accent — Python Royal Blue to Azure (High contrast on white) */
+  --primary: #0284c7;
+  --accent: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%);
+  --accent-ink: #ffffff;
+
+  /* Radius — Clean, structured geometry */
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+
+  /* Depth — Crisp elevation shadow for cards on white background */
+  --shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
+  --glow: none;
+
+  /* Type — Crisp readable typography */
+  --font-head: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+  /* Motion */
+  --dur: 0.25s;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Atmosphere */
+  --grain: 0;
+  --vignette: transparent;
+
+  /* Responsive gutter */
+  --gutter: clamp(28px, 5vw, 96px);
+  --gutter-y: clamp(32px, 6vh, 80px);
+}
