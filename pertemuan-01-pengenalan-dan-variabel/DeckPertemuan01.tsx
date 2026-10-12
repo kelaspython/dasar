@@ -139,7 +139,7 @@ function AnimatedPythonPipeline() {
                 transition: 'all 0.2s ease',
               }}
             >
-              Tahap {st.num[0]}
+              Tahap {st.num}
             </button>
           ))}
         </div>
@@ -657,9 +657,9 @@ export default function DeckPertemuan01() {
       {/* Slide 6: Section Divider: Setup & Install */}
       <Section
         nav="Setup & Instalasi"
-        number="02"
+        n="02"
         title="Persiapan Lingkungan Kerja"
-        subtitle="Instalasi Python di Komputer dan Konfigurasi Terminal"
+        kicker="Instalasi Python di Komputer dan Konfigurasi Terminal"
       />
 
       {/* Slide 7: Langkah Instalasi */}
@@ -802,9 +802,9 @@ Sedang berlangsung pertemuan ke-1
       {/* Slide 9: Section Divider: Variabel */}
       <Section
         nav="Konsep Variabel"
-        number="03"
+        n="03"
         title="Memulai dengan Variabel"
-        subtitle="Deklarasi, Inisialisasi, dan Aturan Penamaan Standar PEP 8"
+        kicker="Deklarasi, Inisialisasi, dan Aturan Penamaan Standar PEP 8"
       />
 
       {/* Slide 10: Apa itu Variabel? */}
